@@ -17,7 +17,6 @@ ps_create_socket()
   /* SOCK_RAW: Raw socket, so we have freedom to handle everything by ourselves */
   /* IPPROTO_TCP: TCP Protocol */
   int socket_file = socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
-  // int socket_file = socket(AF_INET, SOCK_RAW, IPPROTO_ICMP);
 
   /* File descriptor is positive if successfull */
   if (socket_file < 0)

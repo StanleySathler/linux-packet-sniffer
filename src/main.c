@@ -4,11 +4,12 @@
 #include <netinet/ip.h>
 #include "socket/socket.h"
 #include "ip/parser.h"
+#include "tcp/parser.h"
 
 #define PACKET_CONTENT_SIZE 65536
 
 void
-unpack_data(unsigned char *data_content, int data_size);
+print_packets(unsigned char *data_content, int data_size);
 
 int
 main()
@@ -51,7 +52,7 @@ main()
       exit(1);
     }
 
-    unpack_data(recv_data_content, recv_data_size);
+    print_packets(recv_data_content, recv_data_size);
   }
 
   /* How do we ensure this is called, since there is
@@ -70,7 +71,7 @@ main()
  * packet protocol.
  */
 void
-unpack_data(unsigned char* data_content, int data_size)
+print_packets(unsigned char* data_content, int data_size)
 {
   /* Pick the first N bytes from the data content chunk */
   /* (N = sizeof(iphdr)) */
@@ -80,14 +81,16 @@ unpack_data(unsigned char* data_content, int data_size)
   ps_ip_print(data_content, data_size);
 
   /* 6 - TCP Protocol */
-  // if (ip_header->protocol == 6)
-  //   ps_tcp_parse(data_content, data_size);
+  if (ps_ip_is_tcp(ip_header))
+    ps_tcp_print(data_content, data_size);
 
   /* 1 - ICMP Protocol */
-  // else if (ip_header->protocol == 1)
-  //   ps_icmp_parse(data_content, data_size);
+  /* else if (ip_header->protocol == 1) */
+  /*   ps_icmp_parse(data_content, data_size); */
 
   /* 17 - UDP Protocol */
-  // else if (ip_header->protocol == 17)
-  //   ps_udp_parse(data_content, data_size);
+  /* else if (ip_header->protocol == 17) */
+  /*   ps_udp_parse(data_content, data_size); */
+
+  printf("\n\n");
 }

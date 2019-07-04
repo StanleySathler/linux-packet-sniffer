@@ -2,7 +2,16 @@
 #include <netinet/ip.h>
 
 /**
- * @brief: Print details of an IP Packet
+ * @brief: Check if IP Packet contains a TCP payload.
+ */
+int
+ps_ip_is_tcp(struct iphdr* ip_header)
+{
+  return (ip_header->protocol == 6);
+}
+
+/**
+ * @brief: Print details of an IP Packet.
  */
 void
 ps_ip_print(unsigned char* data_content, int data_size)
@@ -13,8 +22,9 @@ ps_ip_print(unsigned char* data_content, int data_size)
   /* Print the details */
   /* @todo: implement all the other fields */
   printf("IP Header \n");
-  printf("├── Version: ............. %u \n", ip_header->version);
-  printf("├── IHL: ................. %u \n", ip_header->ihl);
-  printf("├── ToS: ................. %u \n", ip_header->tos);
-  printf("├── Total Length: ........ %u \n", ip_header->tot_len);
+  printf("├── Version: ................ %u \n", ip_header->version);
+  printf("├── IHL: .................... %u \n", ip_header->ihl);
+  printf("├── ToS: .................... %u \n", ip_header->tos);
+  printf("├── Total Length: ........... %u \n", ip_header->tot_len);
+  printf("├─────────────────────────────── \n");
 }

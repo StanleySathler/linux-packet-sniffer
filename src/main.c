@@ -1,60 +1,93 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <sys/socket.h>
+#include <netinet/ip.h>
+#include "socket/socket.h"
+#include "ip/parser.h"
 
-int create_socket()
-{
-  /**
-   * AF_INET: IPv4 Internet Protocols
-   * SOCK_RAW: Raw network protocol access - data is just a lot of bytes
-   */
-  int socket_id = socket(AF_INET, SOCK_RAW, IPPROTO_TCP);
+#define PACKET_CONTENT_SIZE 65536
 
-  /** Socket file descriptor is always a positive number if successful */
-  if (socket_id < 0)
-  {
-    fprintf(stderr, "Couldn't connect to a Socket \n");
-    exit(1);
-  }
-
-  return socket_id;
-}
+void
+unpack_data(unsigned char *data_content, int data_size);
 
 int
 main()
 {
-  int sock_addr_size;
-  int sock_id = create_socket();
-  unsigned char* data_buffer = malloc(65536);
-  struct sockaddr source_addr;
+  /* Socket address size in bytes */
+  int s_address_size;
+
+  /* Socket address details */
+  struct sockaddr s_address;
+
+  /* Received data size in bytes */
+  int recv_data_size;
+
+  /* Packet data content */
+  unsigned char* recv_data_content = malloc(PACKET_CONTENT_SIZE);
+
+  /* File descriptor pointing to a socket buffer */
+  int socket_fd = ps_create_socket();
+
+  puts("[.] Packet Sniffer has started");
 
   /* Keep the program running "forever" */
-  while (1)
+  while(1)
   {
-    /* Read the socket file and write its content in "data_buffer" */
-    ssize_t data_size = recvfrom(
-      sock_id,
-      data_buffer,
-      65536,
+    s_address_size = sizeof(s_address);
+
+    /* Receive data from socket file */
+    recv_data_size = recvfrom(
+      socket_fd,
+      recv_data_content,
+      PACKET_CONTENT_SIZE,
       0,
-      &source_addr,
-      sizeof (source_addr)
+      &s_address,
+      &s_address_size
     );
 
-    /* If data size is less than 0, it means the program couldn't read
-     * the socket file
-     */
-    if (data_size < 0)
+    if (recv_data_size < 0)
     {
-      fprintf(stderr, "Couldn't retrieve any data from socket \n");
-      break;
+      fprintf(stderr, "Received data length is less than 0, which means there was an error");
+      exit(1);
     }
 
-    printf("%s\n", data_buffer);
+    unpack_data(recv_data_content, recv_data_size);
   }
 
-  close(sock_id);
-  printf("Closing Packet Sniffer");
-  
-  return(0);
+  /* How do we ensure this is called, since there is
+   * an infinite loop right before?
+   */
+  ps_close_socket(socket_fd);
+
+  puts("[.] Packet Sniffer has been closed");
+
+  return 0;
+}
+
+/**
+ * @brief: Convert a chunk of bytes into an unpacked data,
+ * then decide which handler should be chosen based on the
+ * packet protocol.
+ */
+void
+unpack_data(unsigned char* data_content, int data_size)
+{
+  /* Pick the first N bytes from the data content chunk */
+  /* (N = sizeof(iphdr)) */
+  struct iphdr* ip_header = (struct iphdr*)data_content;
+
+  /* Show details for IP Packet */
+  ps_ip_print(data_content, data_size);
+
+  /* 6 - TCP Protocol */
+  // if (ip_header->protocol == 6)
+  //   ps_tcp_parse(data_content, data_size);
+
+  /* 1 - ICMP Protocol */
+  // else if (ip_header->protocol == 1)
+  //   ps_icmp_parse(data_content, data_size);
+
+  /* 17 - UDP Protocol */
+  // else if (ip_header->protocol == 17)
+  //   ps_udp_parse(data_content, data_size);
 }

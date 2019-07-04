@@ -1,4 +1,7 @@
-## Explanation
+## Linux Packet Sniffer
+
+> This project is still **under development**. It was exposed as public so some colleagues can check the progress and make their own notes about how to improve the process.
+
 ### What is a Packet Sniffer?
 A Packet Sniffer is a program that intercept the network traffic passing through
 network interfaces (such as a network board).

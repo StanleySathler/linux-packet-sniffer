@@ -11,7 +11,7 @@ OBJS = src/main.o
 WATCH = $(OBJS) src/socket/socket.h src/ip/parser.h
 
 # Compiler flags
-CFLAGS = -std=c99
+CFLAGS = -Wall
 
 # Sources and headers
 SRCS = src/main.c
@@ -30,4 +30,4 @@ exec: $(PROG)
 
 # Clean all generated files
 clean:
-	rm -f *.o
+	rm -f **/*.o

@@ -15,7 +15,7 @@ int
 main()
 {
   /* Socket address size in bytes */
-  int s_address_size;
+  unsigned int s_address_size;
 
   /* Socket address details */
   struct sockaddr s_address;
@@ -28,8 +28,6 @@ main()
 
   /* File descriptor pointing to a socket buffer */
   int socket_fd = ps_create_socket();
-
-  puts("[.] Packet Sniffer has started");
 
   /* Keep the program running "forever" */
   while(1)
@@ -49,18 +47,16 @@ main()
     if (recv_data_size < 0)
     {
       fprintf(stderr, "Received data length is less than 0, which means there was an error");
-      exit(1);
+      break;
     }
 
     print_packets(recv_data_content, recv_data_size);
   }
 
-  /* How do we ensure this is called, since there is
-   * an infinite loop right before?
+  /* Close socket, so the file descriptor can be reused
+   * by any other program.
    */
   ps_close_socket(socket_fd);
-
-  puts("[.] Packet Sniffer has been closed");
 
   return 0;
 }
@@ -92,5 +88,5 @@ print_packets(unsigned char* data_content, int data_size)
   /* else if (ip_header->protocol == 17) */
   /*   ps_udp_parse(data_content, data_size); */
 
-  printf("\n\n");
+  printf("\n");
 }

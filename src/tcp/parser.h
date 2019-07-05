@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <time.h>
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
@@ -18,13 +19,12 @@ ps_tcp_print(unsigned char* data_content, int data_size)
   /* Extract first N bytes after the IP Header */
   struct tcphdr* tcp_header = (struct tcphdr*)(data_content + ip_header_len);
 
-  /* @todo: print IP packet */
-
   /* Print TCP Packet details */
-  printf("TCP Header \n");
-  printf("├── Source Port: ............ %u \n", ntohs(tcp_header->source));
-  printf("├── Destination Port: ....... %u \n", ntohs(tcp_header->dest));
-  printf("├── Sequence Number: ........ %u \n", ntohl(tcp_header->seq));
-  printf("├── ACK Number: ............. %u \n", ntohl(tcp_header->ack_seq));
-  printf("├─────────────────────────────── \n");
+  printf("\tTCP ");
+  printf("%u > %u (", tcp_header->source, tcp_header->dest);
+  printf("cksum 0x%x, ", tcp_header->check);
+  printf("seq %u, ", tcp_header->seq);
+  printf("ack %u, ", tcp_header->ack_seq);
+  printf("win %u", tcp_header->window);
+  printf(") \n");
 }

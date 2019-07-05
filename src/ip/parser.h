@@ -1,4 +1,7 @@
 #include <stdio.h>
+#include <time.h>
+#include <string.h>
+#include <netinet/in.h>
 #include <netinet/ip.h>
 
 /**
@@ -19,12 +22,18 @@ ps_ip_print(unsigned char* data_content, int data_size)
   /* Extract first N bytes from data content */
   struct iphdr* ip_header = (struct iphdr*)data_content;
 
-  /* Print the details */
-  /* @todo: implement all the other fields */
-  printf("IP Header \n");
-  printf("├── Version: ................ %u \n", ip_header->version);
-  printf("├── IHL: .................... %u \n", ip_header->ihl);
-  printf("├── ToS: .................... %u \n", ip_header->tos);
-  printf("├── Total Length: ........... %u \n", ip_header->tot_len);
-  printf("├─────────────────────────────── \n");
+  /* Get current time */
+  time_t secs_since_epoch = time(NULL);
+  struct tm* time = localtime(&secs_since_epoch);
+
+  /* Print line with details  */
+  printf("%02d:%02d:%02d IP ", time->tm_hour, time->tm_min, time->tm_sec);
+  printf("192.168.0.17 > 192.168.0.21 (");
+  printf("tos 0x%x, ", ip_header->tos);
+  printf("ttl %u, ", ip_header->ttl);
+  printf("id %u, ", ip_header->id);
+  printf("offset %u, ", ip_header->frag_off);
+  printf("proto %u, ", ip_header->protocol);
+  printf("length %u", ip_header->tot_len);
+  printf(") \n");
 }

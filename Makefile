@@ -8,10 +8,15 @@ PROG = bin/packet_sniffer
 OBJS = src/main.o
 
 # Watched files
-WATCH = $(OBJS) src/socket/socket.h src/ip/parser.h
+WATCH = $(OBJS) \
+	src/core/socket/socket.h \
+	src/core/parser/ip.h \
+	src/core/parser/tcp.h \
+	src/cli/ip.h \
+	src/cli/tcp.h
 
 # Compiler flags
-CFLAGS = -Wall
+CFLAGS = -Wall -I src
 
 # Sources and headers
 SRCS = src/main.c

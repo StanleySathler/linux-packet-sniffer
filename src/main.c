@@ -2,9 +2,9 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/ip.h>
-#include "socket/socket.h"
-#include "ip/parser.h"
-#include "tcp/parser.h"
+#include <core/socket/socket.h>
+#include <cli/ip.h>
+#include <cli/tcp.h>
 
 #define PACKET_CONTENT_SIZE 65536
 

@@ -3,6 +3,7 @@
 #include <netinet/ip.h>
 #include <arpa/inet.h>
 #include <netinet/tcp.h>
+#include <core/parser/tcp.h>
 
 /**
  * @brief: Print TCP packet details.
@@ -17,7 +18,7 @@ ps_tcp_print(unsigned char* data_content, int data_size)
   unsigned short ip_header_len = (ip_header->ihl * 4);
 
   /* Extract first N bytes after the IP Header */
-  struct tcphdr* tcp_header = (struct tcphdr*)(data_content + ip_header_len);
+  struct tcphdr* tcp_header = ps_tcp_parse(data_content + ip_header_len);
 
   /* Print TCP Packet details */
   printf("\tTCP ");

@@ -3,15 +3,7 @@
 #include <string.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
-
-/**
- * @brief: Check if IP Packet contains a TCP payload.
- */
-int
-ps_ip_is_tcp(struct iphdr* ip_header)
-{
-  return (ip_header->protocol == 6);
-}
+#include <core/parser/ip.h>
 
 /**
  * @brief: Print details of an IP Packet.
@@ -20,7 +12,7 @@ void
 ps_ip_print(unsigned char* data_content, int data_size)
 {
   /* Extract first N bytes from data content */
-  struct iphdr* ip_header = (struct iphdr*)data_content;
+  struct iphdr* ip_header = ps_ip_parse(data_content);
 
   /* Get current time */
   time_t secs_since_epoch = time(NULL);

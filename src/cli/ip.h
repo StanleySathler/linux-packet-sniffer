@@ -3,6 +3,7 @@
 #include <string.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
+#include <cli/text.h>
 #include <core/parser/ip.h>
 
 /**
@@ -18,9 +19,13 @@ ps_ip_print(unsigned char* data_content, int data_size)
   time_t secs_since_epoch = time(NULL);
   struct tm* time = localtime(&secs_since_epoch);
 
-  /* Print line with details  */
-  printf("%02d:%02d:%02d IP ", time->tm_hour, time->tm_min, time->tm_sec);
-  printf("192.168.0.17 > 192.168.0.21 (");
+  /* Print time line */
+  printf("┌─ ");
+  print_bold("%02d:%02d:%02d \n", time->tm_hour, time->tm_min, time->tm_sec);
+
+  /* Print IP line */
+  printf("├─ ");
+  printf("IP 192.168.0.17 > 192.168.0.21 (");
   printf("tos 0x%x, ", ip_header->tos);
   printf("ttl %u, ", ip_header->ttl);
   printf("id %u, ", ip_header->id);

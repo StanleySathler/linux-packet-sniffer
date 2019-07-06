@@ -21,7 +21,7 @@ ps_tcp_print(unsigned char* data_content, int data_size)
   struct tcphdr* tcp_header = ps_tcp_parse(data_content + ip_header_len);
 
   /* Print TCP Packet details */
-  printf("\tTCP ");
+  printf("└──└─ TCP ");
   printf("%u > %u (", tcp_header->source, tcp_header->dest);
   printf("cksum 0x%x, ", tcp_header->check);
   printf("seq %u, ", tcp_header->seq);

@@ -3,7 +3,7 @@
 > This project is still **under development**. It was exposed as public so some colleagues can check the progress and make their own notes about how to improve the process.
 
 <p align="center">
-  <img width="700" src="./github/packet-sniffer-ss.png" />
+  <img src="./github/packet-sniffer-ss.png" />
 </p>
 
 ### What is a Packet Sniffer?

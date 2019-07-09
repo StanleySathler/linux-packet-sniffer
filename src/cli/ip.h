@@ -15,6 +15,13 @@ ps_ip_print(unsigned char* data_content, int data_size)
   /* Extract first N bytes from data content */
   struct iphdr* ip_header = ps_ip_parse(data_content);
 
+  /* Structs to properly handle binaries representing IP addresses */
+  struct sockaddr_in source_addr, dest_addr;
+  memset(&source_addr, 0, sizeof(struct sockaddr_in));
+  memset(&dest_addr, 0, sizeof(struct sockaddr_in));
+  source_addr.sin_addr.s_addr = ip_header->saddr;
+  dest_addr.sin_addr.s_addr = ip_header->daddr;
+
   /* Get current time */
   time_t secs_since_epoch = time(NULL);
   struct tm* time = localtime(&secs_since_epoch);
@@ -25,7 +32,7 @@ ps_ip_print(unsigned char* data_content, int data_size)
 
   /* Print IP line */
   printf("├─ ");
-  printf("IP 192.168.0.17 > 192.168.0.21 (");
+  printf("IP %s > %s (", inet_ntoa(source_addr.sin_addr), inet_ntoa(dest_addr.sin_addr));
   printf("tos 0x%x, ", ip_header->tos);
   printf("ttl %u, ", ip_header->ttl);
   printf("id %u, ", ip_header->id);

@@ -78,7 +78,7 @@ print_packets(unsigned char* data_content, int data_size)
   unsigned short ip_header_len = (ip_header->ihl * 4);
 
   /* Show details for IP Packet */
-  ps_ip_print(data_content, data_size);
+  ps_ip_print(ip_header);
 
   /* 6 - TCP Protocol */
   if (ps_ip_is_tcp(ip_header))

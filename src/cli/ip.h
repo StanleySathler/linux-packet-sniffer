@@ -7,14 +7,11 @@
 #include <core/parser/ip.h>
 
 /**
- * @brief: Print details of an IP Packet.
+ * @brief Print the details of an IP Packet.
  */
 void
-ps_ip_print(unsigned char* data_content, int data_size)
+ps_ip_print(struct iphdr* ip_header)
 {
-  /* Extract first N bytes from data content */
-  struct iphdr* ip_header = ps_ip_parse(data_content);
-
   /* Structs to properly handle binaries representing IP addresses */
   struct sockaddr_in source_addr, dest_addr;
   memset(&source_addr, 0, sizeof(struct sockaddr_in));

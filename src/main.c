@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <sys/socket.h>
 #include <netinet/ip.h>
+#include <netinet/tcp.h>
 #include <core/socket/socket.h>
 #include <cli/ip.h>
 #include <cli/tcp.h>
@@ -63,26 +64,27 @@ main()
 }
 
 /**
- * @brief: Convert a chunk of bytes into an unpacked data,
- * then decide which handler should be chosen based on the
- * packet protocol.
+ * @brief Convert a chunk of bytes into an unpacked data, then
+ *        decide which handler should be chosen based on the
+ *        packet protocol.
  */
 void
 print_packets(unsigned char* data_content, int data_size)
 {
-  /* Pick the first N bytes from the data content chunk */
-  /* (N = sizeof(iphdr)) */
-  struct iphdr* ip_header = (struct iphdr*)data_content;
+  /* Parse IP Header */
+  struct iphdr* ip_header = ps_ip_parse(data_content);
+  unsigned int ip_hdlen = ps_ip_header_length(ip_header);
 
-  /* IHL is the total of lines. Each line has 4 bytes (32 bits) */
-  unsigned short ip_header_len = (ip_header->ihl * 4);
+  /* Parse TCP Header */
+  struct tcphdr* tcp_hdr = ps_tcp_parse(data_content + ip_hdlen);
+  unsigned int tcp_hdlen = ps_tcp_header_length(tcp_hdr);
 
-  /* Show details for IP Packet */
-  ps_ip_print(data_content, data_size);
+  /* Print IP Packet details */
+  ps_ip_print(ip_header);
 
-  /* 6 - TCP Protocol */
+  /* If TCP, print TCP Segment details */
   if (ps_ip_is_tcp(ip_header))
-    ps_tcp_print((data_content + ip_header_len), (data_size - ip_header_len));
+    ps_tcp_print((data_content + ip_hdlen), (data_size - ip_hdlen));
 
   /* 1 - ICMP Protocol */
   /* else if (ip_header->protocol == 1) */
@@ -91,6 +93,8 @@ print_packets(unsigned char* data_content, int data_size)
   /* 17 - UDP Protocol */
   /* else if (ip_header->protocol == 17) */
   /*   ps_udp_parse(data_content, data_size); */
+
+  ps_data_print(data_content, data_size);
 
   printf("\n");
 }

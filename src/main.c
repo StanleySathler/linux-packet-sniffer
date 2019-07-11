@@ -5,6 +5,7 @@
 #include <core/socket/socket.h>
 #include <cli/ip.h>
 #include <cli/tcp.h>
+#include <cli/data.h>
 
 #define PACKET_CONTENT_SIZE 65536
 
@@ -73,12 +74,15 @@ print_packets(unsigned char* data_content, int data_size)
   /* (N = sizeof(iphdr)) */
   struct iphdr* ip_header = (struct iphdr*)data_content;
 
+  /* IHL is the total of lines. Each line has 4 bytes (32 bits) */
+  unsigned short ip_header_len = (ip_header->ihl * 4);
+
   /* Show details for IP Packet */
   ps_ip_print(data_content, data_size);
 
   /* 6 - TCP Protocol */
   if (ps_ip_is_tcp(ip_header))
-    ps_tcp_print(data_content, data_size);
+    ps_tcp_print((data_content + ip_header_len), (data_size - ip_header_len));
 
   /* 1 - ICMP Protocol */
   /* else if (ip_header->protocol == 1) */

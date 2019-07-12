@@ -69,22 +69,20 @@ main()
 void
 print_packets(unsigned char* data_content, int data_size)
 {
-  /* Pick the first N bytes from the data content chunk */
-  /* (N = sizeof(iphdr)) */
-  struct iphdr* ip_header = (struct iphdr*)data_content;
-
-  /* IHL is the total of lines. Each line has 4 bytes (32 bits) */
-  unsigned short ip_header_len = (ip_header->ihl * 4);
+  /* Parse IP header */
+  struct iphdr* ip_hdr = ps_ip_parse(data_content);
+  unsigned short ip_hdr_len = ps_ip_header_length(ip_hdr);
 
   /* Parse TCP header */
-  struct tcphdr* tcp_header = ps_tcp_parse(data_content + ip_header_len);
+  struct tcphdr* tcp_hdr = ps_tcp_parse(data_content + ip_hdr_len);
+  // unsigned short tcp_hdr_len = ps_tcp_header_length(tcp_hdr);
 
   /* Show details for IP Packet */
-  ps_ip_print(ip_header);
+  ps_ip_print(ip_hdr);
 
   /* 6 - TCP Protocol */
-  if (ps_ip_is_tcp(ip_header))
-    ps_tcp_print(tcp_header);
+  if (ps_ip_is_tcp(ip_hdr))
+    ps_tcp_print(tcp_hdr);
 
   /* 1 - ICMP Protocol */
   /* else if (ip_header->protocol == 1) */

@@ -9,11 +9,8 @@
  * @brief: Print TCP packet details.
  */
 void
-ps_tcp_print(unsigned char* data_content, int data_size)
+ps_tcp_print(struct tcphdr* tcp_header)
 {
-  /* Extract first N bytes after the IP Header */
-  struct tcphdr* tcp_header = ps_tcp_parse(data_content);
-
   /* Print TCP Packet details */
   printf("└──└─ TCP ");
   printf("%u > %u (", tcp_header->source, tcp_header->dest);

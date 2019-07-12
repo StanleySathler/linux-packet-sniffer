@@ -5,6 +5,7 @@
 #include <core/socket/socket.h>
 #include <cli/ip.h>
 #include <cli/tcp.h>
+#include <cli/payload.h>
 
 #define PACKET_CONTENT_SIZE 65536
 
@@ -75,7 +76,6 @@ print_packets(unsigned char* data_content, int data_size)
 
   /* Parse TCP header */
   struct tcphdr* tcp_hdr = ps_tcp_parse(data_content + ip_hdr_len);
-  // unsigned short tcp_hdr_len = ps_tcp_header_length(tcp_hdr);
 
   /* Show details for IP Packet */
   ps_ip_print(ip_hdr);
@@ -92,5 +92,7 @@ print_packets(unsigned char* data_content, int data_size)
   /* else if (ip_header->protocol == 17) */
   /*   ps_udp_parse(data_content, data_size); */
 
-  printf("\n");
+  ps_payload_print(data_content, data_size);
+
+  putchar('\n');
 }

@@ -14,20 +14,16 @@ and they are often used by network administrators and security specialists.
 The most famous Packet Sniffers on the market are [Wireshark](https://www.wireshark.org/) and
 [tcpdump](https://www.tcpdump.org/).
 
-## Is this Packet Sniffer good enough to be used professionally?
-Unfortunatelly, not. 😞
+## Can I use it professionally?
+I wouldn't recommend this. 😞
 
-I created it only for learning purposes. I had the opportunity to learn a bit more about networks and their protocols, so I thought that creating a Packet Sniffer would be a great opportunity to improve both my programming and networks knowledge.
+This was created for learning purposes, to learn more about network protocols and sockets. It's unstable, won't receive updates, and misses lots of features.
 
-Luckily I was right. It indeed improved both. 🌟
-
-## Can I use it for learning purposes?
+## Can I contribute?
 Please, be my guest! 🚀
 
-This is the main purpose of this project: help students to build their own.
+This is the main purpose of this project: help students to build their own. Or at least to help them understand how they work. I'm also learning, so I'm pretty sure new PRs can still teach me a lot.
 
-I spent some hours trying to make the code clean and easily understandable by anyone else, but this is actually way harder than it seems to be.
+I made an effort to keep the code as simple as possible. Still, if you feel the readability could be improved to make it more friendly, feel free to open a PR. Also, if you feel comfortable to implement a fresh new feature here, you are also welcome. 💎
 
-If you feel the code quality could be improved in order to make it more friendly to new users, feel free to create a Pull Request.
-
-Plus, if you feel comfortable to implement a fresh new feature here, you are also welcome. It might be a great opportunity to start contributing to an(other?) Open Source project. 💎
+If you need any help to understand this code, you can contact me at stanley.unibh@gmail.com.
